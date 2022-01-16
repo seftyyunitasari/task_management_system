@@ -1,5 +1,33 @@
 # README
 
+## Deployment procedure to Heroku
+
+1. Access the official website of heroku (https://www.heroku.com/) and make a user registration.
+2. Install heroku CLI
+```
+$ brew tap heroku/brew && brew install heroku
+```
+3. Login to heroku
+```
+$ heroku login
+```
+4. Deploy the application (make sure you are on the application directory)
+```
+$ heroku create
+$ git add .
+$ git commit -m 'init'
+$ git push heroku master
+```
+5. Precompile assets
+```
+$ rails assets:precompile RAILS_ENV=production
+```
+6. Database migration
+```
+heroku run rails db:migrate
+```
+
+
 ## Table Definition
 | No | Table logical name | Table Physical name | Remarks                  |
 | -- | ------------------ | ------------------- | ------------------------ |
