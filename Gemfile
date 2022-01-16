@@ -11,9 +11,14 @@ gem 'webpacker', '~> 5.0'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'bcrypt'
+gem 'rexml'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
+  gem 'rexml'
 end
 
 group :development do
@@ -24,8 +29,7 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '>= 3.26'
-  gem 'selenium-webdriver'
+  gem 'capybara'
   gem 'webdrivers'
 end
 
