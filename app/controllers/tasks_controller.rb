@@ -6,8 +6,11 @@ class TasksController < ApplicationController
     if params[:sort].present?
       @tasks = Task.all.order(params[:sort])
     elsif params[:search].present?
-      @task = Task.all.find_by(title: params[:search])
+      @task_list = Task.all.find_by(title: params[:search])
       redirect_to task_path(@task)
+    elsif params[:priority].present?
+      @tasks = Task.all.order(params[:sort])
+      @task_list = Task.all.where(priority: params[:priority])
     else
       @tasks = Task.all.order(created_at: :desc)
     end
