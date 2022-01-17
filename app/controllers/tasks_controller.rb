@@ -5,6 +5,9 @@ class TasksController < ApplicationController
   def index
     if params[:sort].present?
       @tasks = Task.all.order(params[:sort])
+    elsif params[:search].present?
+      @task = Task.all.find_by(title: params[:search])
+      redirect_to task_path(@task)
     else
       @tasks = Task.all.order(created_at: :desc)
     end

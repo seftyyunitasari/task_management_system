@@ -33,7 +33,13 @@
 <br>
 
 <%= link_to 'New Task', new_task_path %>
-<%= link_to "Short by deadline", :sort => "deadline"%>
-<%= link_to "Short by priority", :sort => "priority"%>
-<%= link_to "Short by status", :sort => "status"%>
+<%= link_to "Sort by deadline", :sort => "deadline"%>
+<%= link_to "Sort by priority", :sort => "priority"%>
+<%= link_to "Sort by status", :sort => "status"%>
+
+<%= form_tag(tasks_path, method: :get) do %>
+  <p> Search for a title </p>
+  <%= text_field_tag(:search, params[:search]) %>
+  <%= submit_tag ("Search") %>
+<% end %>
 

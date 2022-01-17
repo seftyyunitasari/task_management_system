@@ -45,5 +45,16 @@ RSpec.describe 'Task management function', type: :system do
 				expect(@tasks).to match_array [task2, task1]
 			end
 		end
+		context 'When Sort by deadline link is clicked' do
+			it 'Task are sorted based on deadline in descending' do
+				task1 = FactoryBot.create(:task, title: 'task1', detail: 'task1_detail', deadline: "2022-01-31")
+				task2 = FactoryBot.create(:task, title: 'task2', detail: 'task2_detail', deadline: "2022-02-1")
+				visit tasks_path
+				click_on "Sort by deadline"
+				task_list = all('.task_row') 
+				@tasks = Task.all
+				expect(@tasks).to match_array [task1, task2]
+			end
+		end
 	end
 end
