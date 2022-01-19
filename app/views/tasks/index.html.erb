@@ -38,20 +38,15 @@
 <%= link_to "Sort by status", :sort => "status"%>
 
 <%= form_tag(tasks_path, method: :get) do %>
-  <p> Search by a title </p>
+  <p> Search by a title and status </p>
   <%= text_field_tag(:search, params[:search]) %>
+  <%= select_tag(:priority, options_for_select([["", ""], ["High", "high"], ["Middle", "middle"], ["Low", "low"]])) %>
   <%= submit_tag ("Search") %>
 <% end %>
 
-<%= form_tag(tasks_path, method: :get) do %>
-  <p> Search by status </p>
-  <%= select_tag(:priority, options_for_select([["High", "high"], ["Middle", "middle"], ["Low", "low"]])) %>
-  <%= submit_tag ("Search by priority") %>
-<% end %>
-
+<% if @task_list.present? %>
 <h3>Search result</h3>
 
-<% if @task_list.present? %>
   <table>
   <thead>
     <tr>
