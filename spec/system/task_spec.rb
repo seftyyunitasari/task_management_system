@@ -56,5 +56,48 @@ RSpec.describe 'Task management function', type: :system do
 				expect(@tasks).to match_array [task1, task2]
 			end
 		end
+		context "When you click the link to sort by priority" do
+			it "a list of tasks sorted in order of priority is displayed" do
+				task1 = FactoryBot.create(:task, title: 'task1', detail: 'task1_detail', priority: 1)
+				task2 = FactoryBot.create(:task, title: 'task2', detail: 'task2_detail', priority: 2)
+				task3 = FactoryBot.create(:task, title: 'task3', detail: 'task3_detail', priority: 3)
+				visit tasks_path
+				click_on "Sort by priority"
+				@tasks = Task.all
+				expect(@tasks).to match_array [task1, task2, task3]
+			end
+		end
+	end
+
+	describe 'Search function' do
+		before do
+			FactoryBot.create(:task, title: "task1 title test", detail: "task1 detail test", status: "started")
+			FactoryBot.create(:task, title: "task2 title test", detail: "task2 detail test", status: "completed")
+		end
+		context 'If you do a fuzzy search by Title' do
+			it "Filter by tasks that include search keywords" do
+				visit tasks_path
+				fill_in "Search by task title", with: "task1"
+				click_on "search"
+				expect(page).to have_content 'task1'
+			end
+		end
+		context 'When you search for status' do
+			it "Tasks that exactly match the status are narrowed down" do
+				visit tasks_path
+				select('started', from: 'Search by Status')
+				click_on "search"
+				expect(page).to have_content 'started'
+			end
+		end
+		context 'Title performing fuzzy search of title and status search' do
+			it "Narrow down tasks that include search keywords in the Title and exactly match the status" do
+				visit tasks_path
+				fill_in "Search by task title", with: "task1"
+				select('started', from: 'Search by Status')
+				expect(page).to have_content 'task1'
+				expect(page).to have_content 'started'
+			end
+		end
 	end
 end
