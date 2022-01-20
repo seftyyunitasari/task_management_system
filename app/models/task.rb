@@ -1,5 +1,17 @@
 class Task < ApplicationRecord
-	validates :title, presence: true, uniqueness: {case_sensitive: false}
+	validates :title, presence: true
 	validates :detail, presence: true
-	scope :title_like, -> {all.where('title like ?', "%#{params[:search]}%")}
+
+	enum priority: {high: 1, middle: 2, low: 3}
+
+	scope :title_search, -> (query) {where("title LIKE ?", "%#{query}%")}
+	def title_search(query)
+	  where("title LIKE ?", "%#{query}%")
+	end
+
+  	scope :status_search, -> (query) {where(status: query)}
+  	def status_search(query)
+  	  where(status: query)
+  	end
+
 end

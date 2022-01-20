@@ -5,19 +5,22 @@ class TasksController < ApplicationController
   def index
     if params[:sort].present?
       @tasks = Task.all.order(params[:sort])
-    elsif params[:search].present? && params[:priority].present?
-      @tasks = Task.all.order(created_at: :desc)
-      @task_list = Task.where('title like ?', "%#{params[:search]}%").where(priority: params[:priority])
-    elsif params[:priority].present?
-      @tasks = Task.all.order(created_at: :desc)
-      @task_list = Task.all.where(priority: params[:priority])
-    elsif params[:search].present?
-      @tasks = Task.all.order(created_at: :desc)
-      @task_list = Task.title_like
+        elsif params[:sort_priority]
+      @tasks = Task.all.order(priority: :asc)
+    elsif params[:title].present? 
+      if params[:status].present?
+        @tasks = Task.all.title_search(params[:title]).status_search(params[:status])
+      else
+        @tasks = Task.all.title_search(params[:title])
+      end  
+    elsif params[:status].present?
+      @tasks = Task.all.status_search(params[:status])
     else
       @tasks = Task.all.order(created_at: :desc)
     end
   end
+
+
 
   # GET /tasks/1 or /tasks/1.json
   def show
