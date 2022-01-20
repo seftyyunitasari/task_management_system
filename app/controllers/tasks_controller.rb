@@ -4,19 +4,19 @@ class TasksController < ApplicationController
   # GET /tasks or /tasks.json
   def index
     if params[:sort].present?
-      @tasks = Task.all.order(params[:sort])
+      @tasks = Task.all.order(params[:sort]).page params[:page]
         elsif params[:sort_priority]
-      @tasks = Task.all.order(priority: :asc)
+      @tasks = Task.all.order(priority: :asc).page params[:page]
     elsif params[:title].present? 
       if params[:status].present?
-        @tasks = Task.all.title_search(params[:title]).status_search(params[:status])
+        @tasks = Task.all.title_search(params[:title]).status_search(params[:status]).page params[:page]
       else
-        @tasks = Task.all.title_search(params[:title])
+        @tasks = Task.all.title_search(params[:title]).page params[:page]
       end  
     elsif params[:status].present?
-      @tasks = Task.all.status_search(params[:status])
+      @tasks = Task.all.status_search(params[:status]).page params[:page]
     else
-      @tasks = Task.all.order(created_at: :desc)
+      @tasks = Task.all.order(created_at: :desc).page params[:page]
     end
   end
 
