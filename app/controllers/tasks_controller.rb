@@ -5,19 +5,19 @@ class TasksController < ApplicationController
   # GET /tasks or /tasks.json
   def index
     if params[:sort].present?
-      @tasks = Task.all.order(params[:sort]).page params[:page]
+      @tasks = Task.where(user_id: current_user.id).order(params[:sort]).page params[:page]
         elsif params[:sort_priority]
-      @tasks = Task.all.order(priority: :asc).page params[:page]
+      @tasks = Task.where(user_id: current_user.id).order(priority: :asc).page params[:page]
     elsif params[:title].present? 
       if params[:status].present?
-        @tasks = Task.all.title_search(params[:title]).status_search(params[:status]).page params[:page]
+        @tasks = Task.where(user_id: current_user.id).title_search(params[:title]).status_search(params[:status]).page params[:page]
       else
-        @tasks = Task.all.title_search(params[:title]).page params[:page]
+        @tasks = Task.where(user_id: current_user.id).title_search(params[:title]).page params[:page]
       end  
     elsif params[:status].present?
-      @tasks = Task.all.status_search(params[:status]).page params[:page]
+      @tasks = Task.where(user_id: current_user.id).status_search(params[:status]).page params[:page]
     else
-      @tasks = Task.all.order(created_at: :desc).page params[:page]
+      @tasks = Task.where(user_id: current_user.id).order(created_at: :desc).page params[:page]
     end
   end
 
@@ -39,7 +39,7 @@ class TasksController < ApplicationController
   # POST /tasks or /tasks.json
   def create
     @task = Task.new(task_params)
-
+    @task.user_id = current_user.id
     respond_to do |format|
       if @task.save
         format.html { redirect_to task_url(@task), notice: "Task was successfully created." }
@@ -53,6 +53,7 @@ class TasksController < ApplicationController
 
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
+    @task.user_id = current_user.id
     respond_to do |format|
       if @task.update(task_params)
         format.html { redirect_to task_url(@task), notice: "Task was successfully updated." }
