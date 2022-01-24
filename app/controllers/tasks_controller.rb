@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  skip_before_action :login_required, only: [:new, :create]
   before_action :set_task, only: %i[ show edit update destroy ]
 
   # GET /tasks or /tasks.json
