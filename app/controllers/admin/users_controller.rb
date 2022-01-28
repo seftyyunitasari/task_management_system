@@ -1,7 +1,7 @@
 class Admin::UsersController < ApplicationController
 	skip_before_action :login_required, only: [:new, :create]
 	before_action :check_if_admin
-
+	
 	def new
 		@user = User.new
 	end
