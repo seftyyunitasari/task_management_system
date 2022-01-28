@@ -50,19 +50,13 @@ class Admin::UsersController < ApplicationController
 		def destroy
 			@user = User.find(params[:id])
 			@user.destroy
-			redirect_to admin_users_path
+			redirect_to admin_users_path, notice: "user has successfully destroyed"
 		end
 
 		private
 
 		def check_if_admin
 			redirect_to root_path, notice: "Only admin can access the administration screen" unless current_user.is_admin?
-			# if  current_user.is_admin?
-			# 	flash.now[:danger] = "Welcome admin"
-			# else
-			# 	redirect_to root_path
-			# 	flash.now[:danger] = "Only admin can access the administration screen"
-			# end
 		end
 
 		def user_params
