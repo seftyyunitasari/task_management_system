@@ -1,6 +1,7 @@
 class User < ApplicationRecord
 	before_destroy :prevent_no_admin
 	has_many :tasks, dependent: :destroy
+	has_many :labels, dependent: :destroy
 	has_secure_password
 	before_validation {email.downcase!}
 	validates :name, presence: true
