@@ -6,8 +6,10 @@
 
 <%= form_with url: tasks_path, method: :get, html: {class: "form-inline"} , local: true do |form| %>
   <%= form.text_field :title, placeholder: "Search by task title", class: "form-control mr-sm-2" %>
-  <%= form.label :status, "Search by Status:" %>
+  <%= form.label :status, "Search by status:" %>
   <%= form.select :status, options_for_select([[''],['not started'], ['started'], ['completed']]), class: "form-control mr-sm-2"%>
+  <%= form.label :label_id, "Search by label" %>
+  <%= form.select :label_id, Label.all.collect {|l| [l.name, l.id]}, include_blank: true %>
   <%= form.submit value: "search", class: "btn btn-outline-success my-2 my-sm-0", type: "submit" %>
 <% end %>
 
@@ -26,17 +28,21 @@
 
   <tbody>
     <% @tasks.each do |task| %>
-      <tr>
-        <td><%= task.title %></td>
-        <td><%= task.detail %></td>
-        <td><%= task.deadline %></td>
-        <td><%= task.priority %></td>
-        <td><%= task.status %></td>
-        <td><%= task.label %></td>
-        <td><%= link_to 'Show', task %></td>
-        <td><%= link_to 'Edit', edit_task_path(task) %></td>
-        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <tr>
+      <td><%= task.title %></td>
+      <td><%= task.detail %></td>
+      <td><%= task.deadline %></td>
+      <td><%= task.priority %></td>
+      <td><%= task.status %></td>
+      <td>
+       <% task.labels.each do |label| %>
+       <%= label.name %>
+       <% end %>
+     </td>
+     <td><%= link_to 'Show', task %></td>
+     <td><%= link_to 'Edit', edit_task_path(task) %></td>
+     <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+   </tr>
     <% end %>
   </tbody>
 </table>

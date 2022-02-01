@@ -16,6 +16,9 @@ class TasksController < ApplicationController
       end  
     elsif params[:status].present?
       @tasks = Task.where(user_id: current_user.id).status_search(params[:status]).page params[:page]
+    elsif params[:label_id].present?
+      task_id = TaskLabel.where(label_id: params[:label_id]).pluck(:task_id)
+      @tasks = Task.where(id: task_id[0]).page params[:page]
     else
       @tasks = Task.where(user_id: current_user.id).order(created_at: :desc).page params[:page]
     end
